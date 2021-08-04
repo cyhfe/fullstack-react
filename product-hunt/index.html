@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const Seed = (function () {
+      function generateVoteCount() {
+        return Math.floor((Math.random() * 50) + 15);
+      }
+
+      const products = [
+        {
+          id: 1,
+          title: 'Yellow Pail',
+          description: 'On-demand sand castle construction expertise.',
+          url: '#',
+          votes: generateVoteCount(),
+          submitterAvatarUrl: 'images/avatars/daniel.jpg',
+          productImageUrl: 'images/products/image-aqua.png',
+        },
+        {
+          id: 2,
+          title: 'Supermajority: The Fantasy Congress League',
+          description: 'Earn points when your favorite politicians pass legislation.',
+          url: '#',
+          votes: generateVoteCount(),
+          submitterAvatarUrl: 'images/avatars/kristy.png',
+          productImageUrl: 'images/products/image-rose.png',
+        },
+        {
+          id: 3,
+          title: 'Tinfoild: Tailored tinfoil hats',
+          description: 'We already have your measurements and shipping address.',
+          url: '#',
+          votes: generateVoteCount(),
+          submitterAvatarUrl: 'images/avatars/veronika.jpg',
+          productImageUrl: 'images/products/image-steel.png',
+        },
+        {
+          id: 4,
+          title: 'Haught or Naught',
+          description: 'High-minded or absent-minded? You decide.',
+          url: '#',
+          votes: generateVoteCount(),
+          submitterAvatarUrl: 'images/avatars/molly.png',
+          productImageUrl: 'images/products/image-yellow.png',
+        },
+      ];
+
+      return { products: products };
+    }());
+
+    const root = document.getElementById('root')
+    class App extends React.Component {
+      render() {
+        return (
+          <div className="app">
+            <h1>Popular Products</h1>
+            <ProductList />
+          </div>
+        )
+      }
+    }
+    class ProductList extends React.Component {
+      state = {
+        productList: []
+      }
+      componentDidMount() {
+        this.setState({ productList: Seed.products })
+      }
+      handleVotes = (id) => {
+        const nextProductList = this.state.productList.map(p => {
+          if (p.id === id) {
+            return Object.assign({}, p, {
+              votes: p.votes + 1
+            })
+          } else {
+            return p
+          }
+        })
+        this.setState({ productList: nextProductList })
+      }
+      render() {
+        const products = this.state.productList.sort((a, b) => {
+          return b.votes - a.votes
+        })
+        const productComponents = products.map(p => (
+          <Product
+            productImageUrl={p.productImageUrl}
+            title={p.title}
+            description={p.description}
+            submitterAvatarUrl={p.submitterAvatarUrl}
+            votes={p.votes}
+            id={p.id}
+            handleVotes={this.handleVotes}
+          />
+        ))
+        return (
+          <div className="product-list">
+            {productComponents}
+          </div>
+        )
+      }
+    }
+    class Product extends React.Component {
+      render() {
+        const { productImageUrl, title, description, submitterAvatarUrl, votes, handleVotes, id } = this.props
+        return (
+          <div className="product" style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+            <div className="cover">
+              <img src={productImageUrl} width="120" height="120" />
+            </div>
+            <div className="profile" style={{ marginLeft: '15px' }}>
+              <h2 class="title">{title}</h2>
+              <div class="description">{description}</div>
+              <div>Submitted by <img src={submitterAvatarUrl} width="32" height="32" style={{ verticalAlign: 'middle' }} /></div>
+            </div>
+            <div class="vote" style={{ marginLeft: '30px', border: '1px solid', padding: '6px', cursor: 'pointer' }} onClick={() => handleVotes(id)}>
+              {votes}
+            </div>
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<App />, root)
+  </script>
+</body>
+
+</html>
