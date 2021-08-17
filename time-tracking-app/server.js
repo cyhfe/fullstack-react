@@ -34,6 +34,7 @@ app.get("/api/timers", (req, res) => {
 
 // creat
 app.post("/api/timers", (req, res) => {
+  console.log(req.body);
   if (req.body.project && req.body.title) {
     fs.readFile(DATA_FILE, (err, data) => {
       const timers = JSON.parse(data);
@@ -95,7 +96,8 @@ app.delete("/api/timers", (req, res) => {
 });
 
 // start
-app.post("api/timers/start", (req, res) => {
+app.post("/api/timers/start", (req, res) => {
+  console.log(req.body);
   fs.readFile(DATA_FILE, (err, data) => {
     const timers = JSON.parse(data);
     const newTimers = timers.map((timer) => {
@@ -108,14 +110,14 @@ app.post("api/timers/start", (req, res) => {
         return timer;
       }
     });
-    fs.writeFile(DATA_FILE, JSON.stringify(newTimer, null, 2), () => {
+    fs.writeFile(DATA_FILE, JSON.stringify(newTimers, null, 2), () => {
       res.send(newTimers);
     });
   });
 });
 
 // stop
-app.post("api/timers/stop", (req, res) => {
+app.post("/api/timers/stop", (req, res) => {
   fs.readFile(DATA_FILE, (err, data) => {
     const timers = JSON.parse(data);
     const newTimers = timers.map((timer) => {

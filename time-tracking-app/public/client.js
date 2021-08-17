@@ -1,11 +1,15 @@
 window.client = (function () {
   function getTimers() {
-    return fetch("/api/timers").then(checkStatus).then(parseJSON);
+    return fetch("api/timers").then(checkStatus).then(parseJSON);
   }
   function createTimer(data) {
     return fetch("/api/timers", {
       method: "POST",
-      body: JSON.parse(data),
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
       .then(checkStatus)
       .then(parseJSON);
@@ -13,31 +17,47 @@ window.client = (function () {
   function updateTimer(data) {
     return fetch("/api/timers", {
       method: "PUT",
-      body: JSON.parse(data),
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
       .then(checkStatus)
       .then(parseJSON);
   }
   function deleteTimer(data) {
     return fetch("/api/timers", {
-      method: "DELETE",
-      body: JSON.parse(data),
+      method: "delete",
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
       .then(checkStatus)
       .then(parseJSON);
   }
   function startTimer(data) {
-    return fetch("/api/timers", {
+    return fetch("/api/timers/start", {
       method: "POST",
-      body: JSON.parse(data),
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
       .then(checkStatus)
       .then(parseJSON);
   }
   function stopTimer(data) {
-    return fetch("/api/timers", {
+    return fetch("/api/timers/stop", {
       method: "POST",
-      body: JSON.parse(data),
+      body: JSON.stringify(data),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
       .then(checkStatus)
       .then(parseJSON);
@@ -54,7 +74,9 @@ window.client = (function () {
     }
   }
   function parseJSON(response) {
-    return response.json();
+    return new Promise((resolve, reject) => {
+      resolve(response.json());
+    });
   }
   return {
     getTimers,
