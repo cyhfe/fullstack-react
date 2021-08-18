@@ -133,7 +133,7 @@ app.post("/api/timers/stop", (req, res) => {
         return timer;
       }
     });
-    fs.writeFile(DATA_FILE, JSON.stringify(newTimer, null, 2), () => {
+    fs.writeFile(DATA_FILE, JSON.stringify(newTimers, null, 2), () => {
       res.send(newTimers);
     });
   });

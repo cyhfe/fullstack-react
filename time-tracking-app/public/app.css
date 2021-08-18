@@ -19,7 +19,7 @@
   padding: 4px;
   margin: 0.5rem 0;
 }
-.btn {
+.timer-action-button {
   text-align: center;
   box-shadow: 0px 0px 0px 1px #21ba45 inset;
   color: #21ba45;
@@ -28,7 +28,7 @@
   cursor: pointer;
 }
 
-.btn.start {
+.timer-action-button.stop {
   box-shadow: 0px 0px 0px 1px #db2828 inset;
   color: #db2828;
 }
