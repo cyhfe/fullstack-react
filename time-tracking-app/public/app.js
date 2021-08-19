@@ -181,10 +181,7 @@ class ToggleableTimerForm extends React.Component {
     } else {
       return (
         <div className="toggleCreateForm">
-          <TimerForm
-            onFormClose={this.handleFormClose}
-            onFormSubmit={this.handleFormSubmit}
-          />
+          <TimerForm onFormClose={this.handleFormClose} onFormSubmit={this.handleFormSubmit} />
         </div>
       )
     }
@@ -192,10 +189,15 @@ class ToggleableTimerForm extends React.Component {
 }
 
 class Timer extends React.Component {
+  static getDerivedStateFromProps(props, state) {
+    const elapsed = props.runningSince? Date.now() - props.runningSince + props.elapsed : props.elapsed
+    const newState = {
+      elapsed
+    }
+    return newState
+  }
   state = {
-    elapsed: this.props.runningSince
-      ? Date.now() - this.props.runningSince + this.props.elapsed
-      : this.props.elapsed,
+    elapsed: this.props.elapsed || 0,
   }
   handleStartClick = () => {
     this.props.onStartClick(this.props.id)
@@ -218,7 +220,6 @@ class Timer extends React.Component {
       }, 1000)
     }
   }
-  componentDidUpdate() {}
   componentWillUnmount() {
     this.intervalId && clearInterval(this.intervalId)
   }
@@ -232,9 +233,7 @@ class Timer extends React.Component {
           <div className="project">project: {project}</div>
           <div className="action">
             <i className="bi-pencil-square" onClick={onEditClick}></i>
-            <i
-              className="bi-trash"
-              onClick={() => this.props.onTrashClick(id)}></i>
+            <i className="bi-trash" onClick={() => this.props.onTrashClick(id)}></i>
           </div>
           <div className="time">{elapsedString}</div>
         </div>
@@ -252,17 +251,13 @@ class TimerActionButton extends React.Component {
   render() {
     if (this.props.timerIsRunning) {
       return (
-        <div
-          className="timer-action-button stop"
-          onClick={this.props.onStopClick}>
+        <div className="timer-action-button stop" onClick={this.props.onStopClick}>
           Stop
         </div>
       )
     } else {
       return (
-        <div
-          className="timer-action-button start"
-          onClick={this.props.onStartClick}>
+        <div className="timer-action-button start" onClick={this.props.onStartClick}>
           Start
         </div>
       )
@@ -299,19 +294,11 @@ class TimerForm extends React.Component {
         <div className="timer-form">
           <div className="field">
             <label>Title</label>
-            <input
-              type="text"
-              onChange={this.handleTitleChange}
-              value={this.state.title}
-            />
+            <input type="text" onChange={this.handleTitleChange} value={this.state.title} />
           </div>
           <div className="field">
             <label>Project</label>
-            <input
-              type="text"
-              onChange={this.handleProjectChange}
-              value={this.state.project}
-            />
+            <input type="text" onChange={this.handleProjectChange} value={this.state.project} />
           </div>
         </div>
         <div className="timer-form-action">
