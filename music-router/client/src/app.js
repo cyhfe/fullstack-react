@@ -38,10 +38,13 @@ class Login extends React.Component {
     shouldDirect: false,
   };
   handleLoginClick = () => {
-    this.loading = true;
+    this.setState({
+      loading: true,
+    });
     client.login().then(() => {
       this.setState({
         shouldDirect: true,
+        loading: false,
       });
     });
   };
@@ -49,6 +52,7 @@ class Login extends React.Component {
     if (this.state.shouldDirect) {
       return <Redirect to="/albums" />;
     } else {
+      if (this.state.loading) return <div>loading...</div>;
       return <div onClick={this.handleLoginClick}>login</div>;
     }
   }

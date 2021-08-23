@@ -1,5 +1,9 @@
-const AlbumsContainer = () => {
-  return <div>AlbumsContainer</div>;
-};
+import React from "react";
+
+class AlbumsContainer extends React.Component {
+  render() {
+    return <div>container</div>;
+  }
+}
 
 export default AlbumsContainer;
