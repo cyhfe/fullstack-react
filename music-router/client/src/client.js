@@ -36,7 +36,8 @@ class Client {
   }
 
   login() {
-    return fetch("/api/login", {
+    const url = "http://localhost:3001/api/login";
+    return fetch(url, {
       method: "post",
       headers: {
         accept: "application/json",
