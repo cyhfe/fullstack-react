@@ -18,9 +18,9 @@ class TopBar extends React.Component {
       <div className={styles.container}>
         <div>Music Albums</div>
         {client.isLoggedIn() ? (
-          <Link to="logout">Logout</Link>
+          <Link to="/logout">Logout</Link>
         ) : (
-          <Link to="login">Login</Link>
+          <Link to="/login">Login</Link>
         )}
       </div>
     );

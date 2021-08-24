@@ -8,7 +8,12 @@ class VerticalMenu extends React.Component {
         {this.props.albums.map((album) => {
           return (
             <NavLink
-              to={`${this.props.albumsPath}/${album.id}`}
+              to={{
+                pathname: `${this.props.albumsPath}/${album.name.replace(/\s/g, '')}`,
+                state: {
+                  id: album.id
+                }
+              }}
               activeClassName="active"
               key={album.id}
             >

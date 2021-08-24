@@ -21,6 +21,8 @@ class AlbumsContainer extends React.Component {
   }
   render() {
     const matchPath = this.props.match.path;
+    const location = this.props.location
+    // const {id} = location.state
     return (
       <div>
         <VerticalMenu albums={this.state.albums} albumsPath={matchPath} />
