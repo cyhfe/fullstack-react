@@ -65,6 +65,26 @@ class Client {
       .then((res) => res.valid === true);
   }
 
+  getAlbum(albumId) {
+    return this.getAlbums([albumId], (albums) => albums[0]);
+  }
+
+  getAlbums(albumIds) {
+    // See note about tokens above
+    const url =
+      "http://localhost:3001/api/albums?ids=" +
+      albumIds.join(",") +
+      "&token=" +
+      this.token;
+    return fetch(url, {
+      method: "get",
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then(this.checkStatus)
+      .then(this.parseJson);
+  }
   checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
       return response;
