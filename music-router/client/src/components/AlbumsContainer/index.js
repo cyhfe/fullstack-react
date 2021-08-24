@@ -13,22 +13,36 @@ const ALBUM_IDS = [
 class AlbumsContainer extends React.Component {
   state = {
     albums: [],
+    loading: false,
   };
   componentDidMount() {
-    client.getAlbums(ALBUM_IDS).then((albums) => {
-      this.setState({ albums });
-    });
+    this.getAlbums();
   }
+  getAlbums = () => {
+    this.setState({
+      loading: true,
+    });
+    client.getAlbums(ALBUM_IDS).then((albums) => {
+      this.setState({ albums, loading: false });
+    });
+  };
   render() {
     const matchPath = this.props.match.path;
-    const location = this.props.location
-    // const {id} = location.state
-    return (
-      <div>
-        <VerticalMenu albums={this.state.albums} albumsPath={matchPath} />
-        <Album />
-      </div>
-    );
+    if (this.state.loading) {
+      return <div>loading albums...</div>;
+    } else {
+      const id = this.props.location.state?.id;
+      return (
+        <div>
+          <VerticalMenu albums={this.state.albums} albumsPath={matchPath} />
+          {!id ? (
+            <div>please select a album</div>
+          ) : (
+            <Album album={this.state.albums.find((album) => album.id === id)} />
+          )}
+        </div>
+      );
+    }
   }
 }
 

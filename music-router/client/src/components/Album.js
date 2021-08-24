@@ -1,5 +1,5 @@
-const Album = () => {
-  return <div>album</div>;
+const Album = (props) => {
+  return <div>{props.album?.name}</div>;
 };
 
 export default Album;
